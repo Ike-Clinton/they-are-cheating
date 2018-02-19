@@ -11,6 +11,4 @@
 #include <algorithm>
 #include <iterator>
 
-template <class outIter>
-void find_locs(HANDLE process, std::string const &pattern, outIter output);
-
+void printResources(HANDLE phandle, DWORD ADDRESS_RESOURCES_BASE);
