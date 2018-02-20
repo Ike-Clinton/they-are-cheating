@@ -10,5 +10,7 @@
 #include <windows.h>
 #include <algorithm>
 #include <iterator>
+#include <thread>
+#include <chrono>
 
 void printResources(HANDLE phandle, DWORD ADDRESS_RESOURCES_BASE);

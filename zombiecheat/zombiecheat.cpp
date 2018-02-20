@@ -118,78 +118,21 @@ int main()
 		// keep looping going until we wrap back around to 0
 	} while (base != end & !found);
 
-	
+	printResources(phandle, ADDRESS_RESOURCES_BASE);
 
 	while (1) {
-		printResources(phandle, ADDRESS_RESOURCES_BASE);
+		
 		SIZE_T written;
-		DWORD dwValue = 0x00000000;
-		DWORD choice = 0;
-		cout << "\nPlease enter the param you would like to increase: \n";
-		cout << "(1) Gold\n";
-		cout << "(2) Wood\n";
-		cout << "(3) Stone\n";
-		cout << "(4) Iron\n";
-		cout << "(5) Oil\n";
-		cout << "(6) Food\n";
-		cout << "(7) Workers\n";
-		cout << "(8) Power\n";
-		cin >> choice;
-		switch (choice) {
-		case 1:
-			cout << "\n Enter the amount: ";
-			cin >> dwValue;
-			WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_GOLD), &dwValue, sizeof(dwValue), &written);
-			break;
-			// Wood
-		case 2:
-			cout << "\n Enter the amount: ";
-			cin >> dwValue;
-			WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_WOOD), &dwValue, sizeof(dwValue), &written);
-			break;
-			// Stone
-		case 3:
-			cout << "\n Enter the amount: ";
-			cin >> dwValue;
-			WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_STONE), &dwValue, sizeof(dwValue), &written);
-			break;
-			// Iron
-		case 4:
-			cout << "\n Enter the amount: ";
-			cin >> dwValue;
-			WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_IRON), &dwValue, sizeof(dwValue), &written);
-			break;
-			// Oil
-		case 5:
-			cout << "\n Enter the amount: ";
-			cin >> dwValue;
-			WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_OIL), &dwValue, sizeof(dwValue), &written);
-			break;
-			// Gold
+		DWORD dwValue = 0x0FF00000;
 
-			// Food
-		case 6:
-			//cout << "\n Enter the amount: ";
-			//cin >> dwValue;
-			//WriteProcessMemory(phandle, (void*)ADDRESS_FOOD, &dwValue, sizeof(dwValue), &written);
-			break;
-			// Workers
-		case 7:
-			//cout << "\n Enter the amount: ";
-			//cin >> dwValue;
-			//WriteProcessMemory(phandle, (void*)ADDRESS_WORKERS, &dwValue, sizeof(dwValue), &written);
-			break;
-			// Power
-		case 8:
-			//cout << "\n Enter the amount: ";
-			//cin >> dwValue;
-			//WriteProcessMemory(phandle, (void*)ADDRESS_POWER, &dwValue, sizeof(dwValue), &written);
-			break;
-		default:
-			cout << "Please enter a valid choice\n";
-			break;
+		// Write our resources
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_GOLD), &dwValue, sizeof(dwValue), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_WOOD), &dwValue, sizeof(dwValue), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_STONE), &dwValue, sizeof(dwValue), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_IRON), &dwValue, sizeof(dwValue), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_OIL), &dwValue, sizeof(dwValue), &written);
 
-		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
 	return 0;
