@@ -1,18 +1,13 @@
-// zombiecheat.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include "main.h"
 
 // TODO create resources struct
 
+//TODO split this into classes...
+
 using namespace std;
 
-const DWORD OFFSET_WOOD = 0x00;
-const DWORD OFFSET_STONE = 0x04;
-const DWORD OFFSET_IRON = 0x08;
-const DWORD OFFSET_OIL = 0x0C;
-const DWORD OFFSET_GOLD = 0x10;
+
 const DWORD OFFSET_FOOD = 0x00000000;
 const DWORD OFFSET_WORKERS = 0x00000000;
 const DWORD OFFSET_POWER = 0x00000000;
@@ -56,81 +51,60 @@ int main()
 		cout << "Attached to process with pid " << dwPid << "\n";
 	}
 
-
-
-	//Store system info in struct SYSTEM_INFO
-	SYSTEM_INFO sysInfo;
-	GetNativeSystemInfo(&sysInfo);
-	const DWORD PAGESIZE = sysInfo.dwPageSize;
-	cout << "\nPAGESIZE = " << PAGESIZE << "\n";
-
-	//#define ADDRESS1 0x07182568
-	//BYTE buffer[16];
-	//ReadProcessMemory(phandle, (void*)ADDRESS1, &buffer, sizeof(BYTE)*16, 0);
-
-	//for (int i = 0; i < sizeof(buffer); i++ ) {
-	//	printf("%02X", buffer[i]);
-	//}
-
-	char pattern[] = { 
-		0x14, 0x00, 0x00, 0x00,
-		0x00, 0x00, 0x00, 0x00,
-		0x00, 0x00, 0x00, 0x00, 
-		0x00, 0x00, 0x00, 0x00,
-		0x64, 0x00, 0x00, 0x00, 
-		0x00, 0x00, 0x00, 0x00, 
-		0x32, 0x00, 0x00, 0x00, 
-		0x14, 0x00, 0x00, 0x00, 
-		0x14, 0x00, 0x00, 0x00,
-		0x0A, 0x00, 0x00, 0x00,
-	};
 	cout << "\n";
+	int choice = 0;
+	cout << "Before choice";
+	while (choice == 0){
+		printf("Please select an option: \n");
+		printf("(1) New game (default resources)\n");
+		printf("(2) Cheated game (hacked resources standard)\n");
+		printf("(3) Custom starting resources\n");
+		cin >> choice;
 
-	DWORD64 base = (DWORD64)sysInfo.lpMinimumApplicationAddress;
-	DWORD64 end = (DWORD64)sysInfo.lpMaximumApplicationAddress;
-	printf("Min Address: %I64X\n", base);
-	printf("Max Address: %I64X\n", end);
-	bool found = false;
+		switch (choice) {
+		case 1:
+			// Find initial resource offset
+			findOffsetInitial(phandle, &ADDRESS_RESOURCES_BASE);
+			printResources(phandle, ADDRESS_RESOURCES_BASE);
+			break;
+		case 2:
+			// Find hacked game resources offset
+			findOffsetInGame(phandle, &ADDRESS_RESOURCES_BASE);
+			printResources(phandle, ADDRESS_RESOURCES_BASE);
+			break;
+		case 3:
+			// Get custom values
+			// Find initial resource offset
+			//findOffsetCustom(phandle, &ADDRESS_RESOURCES_BASE);
+			printResources(phandle, ADDRESS_RESOURCES_BASE);
+			break;
+		default:
+			choice = 0;
+			break;
 
-	printf("Searching for resource location in memory . . .\n");
-
-	do {
-		char buffer[4096];
-		if (ReadProcessMemory(phandle, (void*)base, buffer, PAGESIZE, NULL) != 0)
-		{
-			auto it = std::search(
-				std::begin(buffer), std::end(buffer),
-				std::begin(pattern), std::end(pattern));
-
-			if (it == std::end(buffer)) {
-				//not found
-			}
-			else
-			{
-				// We found our signature, get the address of the struct
-				ADDRESS_RESOURCES_BASE = base + std::distance(std::begin(buffer), it);
-				printf("Found: %I64X\n", ADDRESS_RESOURCES_BASE);
-				found = true;
-				
-			}
-		}
-		base += PAGESIZE;
-		// keep looping going until we wrap back around to 0
-	} while (base != end & !found);
-
-	printResources(phandle, ADDRESS_RESOURCES_BASE);
+		};
+	}
+	
 
 	while (1) {
 		
 		SIZE_T written;
 		DWORD dwValue = 0x0FF00000;
 
+		DWORD dwWood = 0x00030D40;
+		DWORD dwStone = 0x00030D40;
+		DWORD dwIron = 0x00030D40;
+		DWORD dwOil = 0x00030D40;
+		DWORD dwGold = 0x007A0012;
+
+		// if not still same value, find offsets again
+
 		// Write our resources
-		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_GOLD), &dwValue, sizeof(dwValue), &written);
-		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_WOOD), &dwValue, sizeof(dwValue), &written);
-		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_STONE), &dwValue, sizeof(dwValue), &written);
-		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_IRON), &dwValue, sizeof(dwValue), &written);
-		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_OIL), &dwValue, sizeof(dwValue), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_GOLD), &dwValue, sizeof(dwGold), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_WOOD), &dwValue, sizeof(dwWood), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_STONE), &dwValue, sizeof(dwStone), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_IRON), &dwValue, sizeof(dwIron), &written);
+		WriteProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_OIL), &dwValue, sizeof(dwOil), &written);
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
@@ -146,11 +120,12 @@ int main()
 */
 void printResources(HANDLE phandle, DWORD ADDRESS_RESOURCES_BASE) {
 
-	DWORD dwWood = 0x00000000;
-	DWORD dwStone = 0x00000000;
-	DWORD dwIron = 0x00000000;
-	DWORD dwOil = 0x00000000;
-	DWORD dwGold = 0x00000000;
+	DWORD dwWood = 0x00030D40;
+	DWORD dwStone = 0x00030D40;
+	DWORD dwIron = 0x00030D40;
+	DWORD dwOil = 0x00030D40;
+	DWORD dwGold = 0x007A0012;
+
 	DWORD dwFood = 0x00000000;
 	DWORD dwWorkers = 0x00000000;
 	DWORD dwPower = 0x00000000;
@@ -175,4 +150,209 @@ void printResources(HANDLE phandle, DWORD ADDRESS_RESOURCES_BASE) {
 	ReadProcessMemory(phandle, (void*)(ADDRESS_RESOURCES_BASE + OFFSET_OIL), &dwOil, sizeof(dwOil), 0);
 	printf("Oil: %d\n", dwOil);
 }
+
+/*!
+*  Find the offset of the resources struct for a new game
+*
+*  @param[in]  phandle Handle to the process for TheyAreBillions.exe
+*  @param[in]  ADDRESS_RESOUCES_BASE DWORD ptr 
+*  @param[out] pdwOut This is a parameter that is filled in.
+*
+*  @return Void
+*/
+void findOffsetInitial(HANDLE phandle, DWORD* ADDRESS_RESOURCES_BASE) {
+
+	printf("Searching for resource location in memory . . .\n");
+
+	char initialPattern[] = {
+		0x14, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00,
+		0x64, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00,
+		0x32, 0x00, 0x00, 0x00,
+		0x14, 0x00, 0x00, 0x00,
+		0x14, 0x00, 0x00, 0x00,
+		0x0A, 0x00, 0x00, 0x00,
+	};
+
+	//Store system info in struct SYSTEM_INFO
+	SYSTEM_INFO sysInfo;
+	GetNativeSystemInfo(&sysInfo);
+	const DWORD PAGESIZE = sysInfo.dwPageSize;
+	cout << "\nPAGESIZE = " << PAGESIZE << "\n";
+
+	DWORD64 base = (DWORD64)sysInfo.lpMinimumApplicationAddress;
+	DWORD64 end = (DWORD64)sysInfo.lpMaximumApplicationAddress;
+	printf("Min Address: %I64X\n", base);
+	printf("Max Address: %I64X\n", end);
+	bool found = false;
+	
+
+	do {
+		char buffer[4096];
+		if (ReadProcessMemory(phandle, (void*)base, buffer, PAGESIZE, NULL) != 0)
+		{
+			auto it = std::search(
+				std::begin(buffer), std::end(buffer),
+				std::begin(initialPattern), std::end(initialPattern));
+
+			if (it == std::end(buffer)) {
+				//not found
+			}
+			else
+			{
+				// We found our signature, get the address of the struct
+				*ADDRESS_RESOURCES_BASE = base + std::distance(std::begin(buffer), it);
+				printf("Found: %I64X\n", *ADDRESS_RESOURCES_BASE);
+				found = true;
+
+			}
+		}
+		base += PAGESIZE;
+		// keep looping going until we wrap back around to 0
+	} while (base != end & !found);
+}
+
+
+/*!
+*  Find the offset of the resources struct for a game in progress
+*
+*  @param[in]  phandle Handle to the process for TheyAreBillions.exe
+*  @param[in]  ADDRESS_RESOUCES_BASE DWORD ptr
+*  @param[out] pdwOut This is a parameter that is filled in.
+*
+*  @return Void
+*/
+void findOffsetInGame(HANDLE phandle, DWORD* ADDRESS_RESOURCES_BASE) {
+
+	printf("Searching for resource location in memory . . .\n");
+
+	char inGamePattern[] = {
+		0x40, 0x0D, 0x03, 0x00,
+		0x40, 0x0D, 0x03, 0x00,
+		0x40, 0x0D, 0x03, 0x00,
+		0x40, 0x0D, 0x03, 0x00,
+		0x00, 0x12, 0x7A, 0x00,
+		0x02, 0x01, 0x00, 0x00,
+		0x32, 0x00, 0x00, 0x00,
+	};
+
+	//40 0D 03 00 40 0D 03 00 40 0D 03 00 40 0D 03 00 00 12 7A 00
+
+	//Store system info in struct SYSTEM_INFO
+	SYSTEM_INFO sysInfo;
+	GetNativeSystemInfo(&sysInfo);
+	const DWORD PAGESIZE = sysInfo.dwPageSize;
+
+	// Get the application max and min addresses
+	DWORD64 base = (DWORD64)sysInfo.lpMinimumApplicationAddress;
+	DWORD64 end = (DWORD64)sysInfo.lpMaximumApplicationAddress;
+	printf("Min Address: %I64X\n", base);
+	printf("Max Address: %I64X\n", end);
+	bool found = false;
+
+
+	do {
+		char buffer[4096];
+		if (ReadProcessMemory(phandle, (void*)base, buffer, PAGESIZE, NULL) != 0)
+		{
+			auto it = std::search(
+				std::begin(buffer), std::end(buffer),
+				std::begin(inGamePattern), std::end(inGamePattern));
+
+			if (it == std::end(buffer)) {
+				//not found
+			}
+			else
+			{
+				// We found our signature, get the address of the struct
+				*ADDRESS_RESOURCES_BASE = base + std::distance(std::begin(buffer), it);
+				printf("Found: %I64X\n", *ADDRESS_RESOURCES_BASE);
+				found = true;
+
+			}
+		}
+		base += PAGESIZE;
+		// keep looping going until we wrap back around to 0
+	} while (base != end & !found);
+
+}
+
+/*!
+*  Find the offset of the resources struct for custom amount of resources
+*
+*  @param[in]  phandle Handle to the process for TheyAreBillions.exe
+*  @param[in]  ADDRESS_RESOUCES_BASE DWORD ptr
+*  @param[in]  dwGold Current gold value in game
+*  @param[in]  dwWood Current wood value in game
+*  @param[in]  dwStone Current stone value in game
+*  @param[in]  dwIron Current Iron value in game
+*  @param[in]  dwOil Current Oil value in game
+*  @param[out] pdwOut This is a parameter that is filled in.
+*
+*  @return Void
+*/
+void findOffsetCustom(HANDLE phandle, DWORD* ADDRESS_RESOURCES_BASE, DWORD dwGold, DWORD dwWood, DWORD dwStone, DWORD dwIron, 
+	DWORD dwOil) {
+
+	printf("Searching for resource location in memory . . .\n");
+
+
+	char customPattern[] = {
+		0x40, 0x0D, 0x03, 0x00, // Wood
+		0x40, 0x0D, 0x03, 0x00, // Stone
+		0x40, 0x0D, 0x03, 0x00, // Iron
+		0x40, 0x0D, 0x03, 0x00, // Oil
+		0x00, 0x12, 0x7A, 0x00, // Gold
+		0x00, 0x00, 0x00, 0x00,
+		0x32, 0x00, 0x00, 0x00,
+		0x14, 0x00, 0x00, 0x00,
+		0x14, 0x00, 0x00, 0x00,
+		0x0A, 0x00, 0x00, 0x00,
+	};
+
+	//40 0D 03 00 40 0D 03 00 40 0D 03 00 40 0D 03 00 00 12 7A 00
+
+	//Store system info in struct SYSTEM_INFO
+	SYSTEM_INFO sysInfo;
+	GetNativeSystemInfo(&sysInfo);
+	const DWORD PAGESIZE = sysInfo.dwPageSize;
+
+	// Get the application max and min addresses
+	DWORD64 base = (DWORD64)sysInfo.lpMinimumApplicationAddress;
+	DWORD64 end = (DWORD64)sysInfo.lpMaximumApplicationAddress;
+	printf("Min Address: %I64X\n", base);
+	printf("Max Address: %I64X\n", end);
+	bool found = false;
+
+
+	do {
+		char buffer[4096];
+		if (ReadProcessMemory(phandle, (void*)base, buffer, PAGESIZE, NULL) != 0)
+		{
+			auto it = std::search(
+				std::begin(buffer), std::end(buffer),
+				std::begin(customPattern), std::end(customPattern));
+
+			if (it == std::end(buffer)) {
+				//not found
+			}
+			else
+			{
+				// We found our signature, get the address of the struct
+				*ADDRESS_RESOURCES_BASE = base + std::distance(std::begin(buffer), it);
+				printf("Found: %I64X\n", *ADDRESS_RESOURCES_BASE);
+				found = true;
+
+			}
+		}
+		base += PAGESIZE;
+		// keep looping going until we wrap back around to 0
+	} while ((base != end) & !found);
+
+}
+
+
 

@@ -6,3 +6,9 @@
 
 #define ADDRESS_WORLD 0x123456
 
+#define OFFSET_WOOD 0x00
+#define OFFSET_STONE 0x04
+#define OFFSET_IRON 0x08
+#define OFFSET_OIL 0x0C
+#define OFFSET_GOLD 0x10
+
