@@ -1,24 +1,30 @@
-﻿  zombiecheat.cpp
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(101): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(102): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(103): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(104): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(105): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(132): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(136): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(140): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(144): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(148): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(205): warning C4244: '=': conversion from 'DWORD64' to 'DWORD', possible loss of data
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(213): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(206): warning C4477: 'printf' : format string '%I64X' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'DWORD'
-  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(206): note: consider using '%lX' in the format string
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(269): warning C4244: '=': conversion from 'DWORD64' to 'DWORD', possible loss of data
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(277): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(270): warning C4477: 'printf' : format string '%I64X' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'DWORD'
-  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(270): note: consider using '%lX' in the format string
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(343): warning C4244: '=': conversion from 'DWORD64' to 'DWORD', possible loss of data
-e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(344): warning C4477: 'printf' : format string '%I64X' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'DWORD'
-  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(344): note: consider using '%lX' in the format string
+﻿  Skipping... (no relevant changes detected)
+  stdafx.cpp
+  zombiecheat.cpp
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(108): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(109): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(110): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(111): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(112): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(139): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(143): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(147): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(151): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(155): warning C4312: 'type cast': conversion from 'DWORD' to 'void *' of greater size
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(212): warning C4244: '=': conversion from 'DWORD64' to 'DWORD', possible loss of data
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(220): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(213): warning C4477: 'printf' : format string '%I64X' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'DWORD'
+  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(213): note: consider using '%lX' in the format string
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(276): warning C4244: '=': conversion from 'DWORD64' to 'DWORD', possible loss of data
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(284): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(277): warning C4477: 'printf' : format string '%I64X' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'DWORD'
+  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(277): note: consider using '%lX' in the format string
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(326): warning C4838: conversion from 'BYTE' to 'char' requires a narrowing conversion
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(357): warning C4244: '=': conversion from 'DWORD64' to 'DWORD', possible loss of data
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(307): warning C4473: 'printf' : not enough arguments passed for format string
+  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(307): note: placeholders and their parameters expect 1 variadic arguments, but 0 were provided
+  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(307): note: the missing variadic argument 1 is required by format string '%16d'
+e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(358): warning C4477: 'printf' : format string '%I64X' requires an argument of type 'unsigned __int64', but variadic argument 1 has type 'DWORD'
+  e:\github\they-are-cheating\zombiecheat\zombiecheat.cpp(358): note: consider using '%lX' in the format string
   zombiecheat.vcxproj -> E:\github\they-are-cheating\zombiecheat\x64\Debug\zombiecheat.exe
   zombiecheat.vcxproj -> E:\github\they-are-cheating\zombiecheat\x64\Debug\zombiecheat.pdb (Partial PDB)

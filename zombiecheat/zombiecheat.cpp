@@ -53,7 +53,6 @@ int main()
 
 	cout << "\n";
 	int choice = 0;
-	cout << "Before choice";
 	while (choice == 0){
 		printf("Please select an option: \n");
 		printf("(1) New game (default resources)\n");
@@ -73,9 +72,14 @@ int main()
 			printResources(phandle, ADDRESS_RESOURCES_BASE);
 			break;
 		case 3:
-			// Get custom values
-			// Find initial resource offset
-			//findOffsetCustom(phandle, &ADDRESS_RESOURCES_BASE);
+			// Get custom values and find offset
+			printf("Please enter Gold, Wood, Stone, Iron, Oil values");
+			cin >> dwGold;
+			cin >> dwWood;
+			cin >> dwStone;
+			cin >> dwIron;
+			cin >> dwOil;
+			findOffsetCustom(phandle, &ADDRESS_RESOURCES_BASE, dwGold, dwWood, dwStone, dwIron, dwOil);
 			printResources(phandle, ADDRESS_RESOURCES_BASE);
 			break;
 		default:
@@ -299,13 +303,20 @@ void findOffsetCustom(HANDLE phandle, DWORD* ADDRESS_RESOURCES_BASE, DWORD dwGol
 
 	printf("Searching for resource location in memory . . .\n");
 
+	printf("Values:\n\tGold: %16d\n\tWood: ");
+
+	BYTE *lpWood = (BYTE*)&dwWood;
+	BYTE *lpStone = (BYTE*)&dwStone;
+	BYTE *lpIron = (BYTE*)&dwIron;
+	BYTE *lpOil = (BYTE*)&dwOil;
+	BYTE *lpGold = (BYTE*)&dwGold;
 
 	char customPattern[] = {
-		0x40, 0x0D, 0x03, 0x00, // Wood
-		0x40, 0x0D, 0x03, 0x00, // Stone
-		0x40, 0x0D, 0x03, 0x00, // Iron
-		0x40, 0x0D, 0x03, 0x00, // Oil
-		0x00, 0x12, 0x7A, 0x00, // Gold
+		lpWood[3], lpWood[2], lpWood[1], lpWood[0], // Wood
+		lpStone[3], lpStone[2], lpStone[1], lpStone[0], // Stone
+		lpIron[3], lpIron[2], lpIron[1], lpIron[0], // Iron
+		lpOil[3], lpOil[2], lpOil[1], lpOil[0], // Oil
+		lpGold[3], lpGold[2], lpGold[1], lpGold[0], // Gold
 		0x00, 0x00, 0x00, 0x00,
 		0x32, 0x00, 0x00, 0x00,
 		0x14, 0x00, 0x00, 0x00,
