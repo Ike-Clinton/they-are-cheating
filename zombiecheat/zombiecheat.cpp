@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "main.h"
+#include "util.h"
 
 // TODO create resources struct
 
@@ -303,28 +304,18 @@ void findOffsetCustom(HANDLE phandle, DWORD* ADDRESS_RESOURCES_BASE, DWORD dwGol
 
 	printf("Searching for resource location in memory . . .\n");
 
-	printf("Values:\n\tGold: %16d\n\tWood: ");
-
-	BYTE *lpWood = (BYTE*)&dwWood;
-	BYTE *lpStone = (BYTE*)&dwStone;
-	BYTE *lpIron = (BYTE*)&dwIron;
-	BYTE *lpOil = (BYTE*)&dwOil;
-	BYTE *lpGold = (BYTE*)&dwGold;
+	printf("Values:\n\tGold: %08X\n\tWood: %08X", dwGold, dwWood);
 
 	char customPattern[] = {
-		lpWood[3], lpWood[2], lpWood[1], lpWood[0], // Wood
-		lpStone[3], lpStone[2], lpStone[1], lpStone[0], // Stone
-		lpIron[3], lpIron[2], lpIron[1], lpIron[0], // Iron
-		lpOil[3], lpOil[2], lpOil[1], lpOil[0], // Oil
-		lpGold[3], lpGold[2], lpGold[1], lpGold[0], // Gold
-		0x00, 0x00, 0x00, 0x00,
-		0x32, 0x00, 0x00, 0x00,
-		0x14, 0x00, 0x00, 0x00,
-		0x14, 0x00, 0x00, 0x00,
-		0x0A, 0x00, 0x00, 0x00,
+		GetFourthByte(dwWood), GetThirdByte(dwWood), GetSecondByte(dwWood), GetFirstByte(dwWood), // Wood
+		GetFourthByte(dwStone), GetThirdByte(dwStone), GetSecondByte(dwStone), GetFirstByte(dwStone), // Stone
+		GetFourthByte(dwIron), GetThirdByte(dwIron), GetSecondByte(dwIron), GetFirstByte(dwIron), // Iron
+		GetFourthByte(dwOil), GetThirdByte(dwOil), GetSecondByte(dwOil), GetFirstByte(dwOil), // Oil
+		GetFourthByte(dwGold), GetThirdByte(dwGold), GetSecondByte(dwGold), GetFirstByte(dwGold), // Gold
 	};
+	
+		printf("%02X,%02X,%02X,%02X", GetFourthByte(dwWood), GetThirdByte(dwWood), GetSecondByte(dwWood), GetFirstByte(dwWood)); // Wood
 
-	//40 0D 03 00 40 0D 03 00 40 0D 03 00 40 0D 03 00 00 12 7A 00
 
 	//Store system info in struct SYSTEM_INFO
 	SYSTEM_INFO sysInfo;
